@@ -9,8 +9,7 @@ const dbConfig = {
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  // REMOVA completamente o bloco condicional - use sempre socket no Cloud Run
-  host: !isProduction ? process.env.DB_HOST : '/cloudsql/cdc-org:southamerica-east1:postgres-cdc',
+  host: process.env.DB_HOST || 'postgres',
   dialectOptions: {
     // Mantenha essas opções sempre
     ssl: false,
