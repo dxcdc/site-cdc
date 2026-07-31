@@ -1,6 +1,12 @@
 import uploadFeature from '@adminjs/upload'
 import { componentLoader } from '../src/components.js'
 import { GCPProvider } from './GCPProvider.js'
+import { LocalProvider } from './LocalProvider.js'
+import fs from 'fs'
+import path from 'path'
+
+const hasGcpKey = fs.existsSync(path.join(process.cwd(), 'config/chave.json'))
+const provider = hasGcpKey ? new GCPProvider() : new LocalProvider()
 
 export const createUploadFeature = ({
   folder = 'uploads',
@@ -12,7 +18,7 @@ export const createUploadFeature = ({
 }) =>
   uploadFeature({
     componentLoader,
-    provider: new GCPProvider(),
+    provider,
     properties: {
       key,
       file,

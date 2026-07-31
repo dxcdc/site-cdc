@@ -12,8 +12,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Servir arquivos estáticos de upload local
+// Servir arquivos estáticos de upload local (uploads e fallback em public/assets)
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+app.use("/uploads", express.static(path.join(process.cwd(), "public/assets")));
 
 // Rota de Diagnóstico & Healthcheck
 app.get("/", (req, res) => {
@@ -35,6 +36,10 @@ app.use("/api", routes);
   try {
     await db.sequelize.authenticate();
     console.log("✅ Conexão com o banco estabelecida com sucesso!");
+    
+    // Auto-criar tabelas no banco de dados se não existirem
+    await db.sequelize.sync();
+    console.log("📊 Esquema de banco de dados verificado com sucesso!");
     
     // Teste adicional - execute uma query simples
     const [results] = await db.sequelize.query("SELECT current_user");

@@ -16,12 +16,23 @@ const nextConfig = {
   reactStrictMode: true,
 
   images: {
+    // No laboratório, NEXT_PUBLIC_API_URL aponta para localhost:5001, que é
+    // acessível pelo navegador, mas não pelo container do Next (onde localhost
+    // seria o próprio frontend). Sirva a mídia diretamente para evitar 500 no
+    // otimizador server-side e preservar os arquivos originais da migração.
+    unoptimized: true,
     remotePatterns: [
       // Backend Express (desenvolvimento local)
       {
         protocol: 'http',
         hostname: 'localhost',
         port: '5000',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '5001',
         pathname: '/uploads/**',
       },
       // Backend Express sem porta específica (proxies, produção)

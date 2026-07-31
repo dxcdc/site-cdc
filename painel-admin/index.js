@@ -7,9 +7,8 @@ import authRoutes from './routes/auth.js'
 import uploadEditorImageRoute from './routes/uploadIMG.js';
 import AdminJSExpress from '@adminjs/express'
 import path from 'path';
-import { fileURLToPath } from 'url'; // Necessário para ESM
+import { fileURLToPath } from 'url';
 
-// Obter __dirname em módulos ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -27,26 +26,28 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
-const adminRouter = AdminJSExpress.buildRouter(adminJs)
+// Rotas públicas e de autenticação
+app.use(authRoutes)
+app.use(uploadEditorImageRoute);
+app.use("/assets", express.static(path.join(__dirname, './assets')));
+
+// Proteção de rotas do Painel AdminJS
+app.use(adminJs.options.rootPath, (req, res, next) => {
+    if (req.path.startsWith('/auth/google') || req.path.startsWith('/login')) {
+        next()
+    } else if (req.session.passport && req.session.passport.user) {
+        next()
+    } else {
+        res.redirect(`${adminJs.options.rootPath}/login`)
+    }
+})
 
 // Redirecionamento da raiz / para /admin
 app.get('/', (req, res) => {
     res.redirect('/admin');
 });
 
-app.use(adminJs.options.rootPath, (req, res, next) => {
-    if (req.path.startsWith('/auth/google') || req.path.startsWith('/auth/google/callback')) {
-        next()
-    } else if (req.session.passport && req.session.passport.user) {
-        next()
-    } else {
-        res.redirect(`${adminJs.options.rootPath}/auth/google`)
-    }
-})
-
-app.use("/assets", express.static(path.join(__dirname, './assets')));
-app.use(authRoutes)
-app.use(uploadEditorImageRoute);
+const adminRouter = AdminJSExpress.buildRouter(adminJs)
 app.use(adminJs.options.rootPath, adminRouter)
 
 const PORT = process.env.PORT || 8080;

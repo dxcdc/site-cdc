@@ -38,10 +38,11 @@ services:
       EMAIL_PASSWORD: ${EMAIL_PASSWORD}
       LOCAL_STORAGE_PATH: /app/uploads
     ports:
-      - "5000:8080"
+      - "5001:8080"
     volumes:
-      - ./uploads:/app/uploads
-      - ./frontend/public/assets:/app/public/assets
+      - ./backend/src:/app/src:z
+      - ./uploads:/app/uploads:z
+      - ./frontend/public/assets:/app/public/assets:z
     depends_on:
       postgres:
         condition: service_healthy
@@ -69,7 +70,10 @@ services:
     ports:
       - "3001:8080"
     volumes:
-      - ./uploads:/usr/src/app/uploads
+      - ./painel-admin/config:/usr/src/app/config:z
+      - ./painel-admin/routes:/usr/src/app/routes:z
+      - ./painel-admin/index.js:/usr/src/app/index.js:z
+      - ./uploads:/usr/src/app/uploads:z
     depends_on:
       postgres:
         condition: service_healthy
@@ -82,7 +86,7 @@ services:
       args:
         # NEXT_PUBLIC_* são embutidas no bundle durante o build.
         # Devem ser passadas como ARG, não como environment runtime.
-        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:5000}
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:5001}
     container_name: site_cdc_frontend
     restart: always
     environment:
