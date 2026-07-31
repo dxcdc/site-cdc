@@ -38,7 +38,7 @@ services:
       EMAIL_PASSWORD: ${EMAIL_PASSWORD}
       LOCAL_STORAGE_PATH: /app/uploads
     ports:
-      - "5001:8080"
+      - "${PORT_BACKEND:-5001}:8080"
     volumes:
       - ./backend/src:/app/src:z
       - ./uploads:/app/uploads:z
@@ -68,7 +68,7 @@ services:
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       BASE_URL: ${BASE_URL:-http://localhost:3001}
     ports:
-      - "3001:8080"
+      - "${PORT_ADMIN:-3001}:8080"
     volumes:
       - ./painel-admin/config:/usr/src/app/config:z
       - ./painel-admin/routes:/usr/src/app/routes:z
@@ -92,7 +92,7 @@ services:
     environment:
       NODE_ENV: production
     ports:
-      - "3000:3000"
+      - "${PORT_FRONTEND:-3000}:3000"
     depends_on:
       - backend
 
