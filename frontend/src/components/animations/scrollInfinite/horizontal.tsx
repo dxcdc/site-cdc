@@ -1,7 +1,7 @@
 'use client'
 
 import { IParceiro } from '@/clients/api/parceiros'
-import { storageUrl } from '@/constants/storageDomain'
+import { resolveMediaUrl } from '@/lib/media'
 import Box from '@mui/material/Box'
 import React from 'react'
 
@@ -52,7 +52,7 @@ export default function ScrollInfiniteHorizontal({
               width: `${itemWidth}px`,
               height: `${itemHeight}px`,
               borderRadius: '6px',
-              backgroundImage: `url("${storageUrl}/${item.url_imagem}")`,
+              backgroundImage: `url("${resolveMediaUrl(item.url_imagem)}")`,
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center',

@@ -13,6 +13,12 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED 1
+# ARG deve ser declarado ANTES do RUN npm run build.
+# Variáveis NEXT_PUBLIC_* são embutidas estaticamente no bundle pelo Next.js
+# durante o build — não são lidas em runtime. Se não forem passadas aqui,
+# ficam undefined no bundle final mesmo que docker-compose defina environment.
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 RUN npm run build
 
 # Imagem de produção

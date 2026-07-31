@@ -1,9 +1,9 @@
-"use client"
+﻿"use client"
 import Footer from '@/components/molecules/Footer'
 import HeaderBannerUnique from '@/components/templates/HeaderBannerUnique'
 import TrabalheConoscoPage from '@/features/trabalhe-conosco'
 import { useBannerQuery } from '@/clients/api/banners'
-import { storageUrl } from '@/constants/storageDomain'
+import { resolveMediaUrl } from '@/lib/media'
 import { TypeBannerUnique } from '@/components/atoms/Banner/unique'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
 
@@ -13,7 +13,7 @@ export default function TrabalheConosco() {
   const Banner: TypeBannerUnique = {
     id: data?.[0]?.id,
     title: data?.[0]?.titulo,
-    image: `${storageUrl}/${data?.[0].url_img}`,
+    image: resolveMediaUrl(data?.[0]?.url_img),
   }
 
   return (

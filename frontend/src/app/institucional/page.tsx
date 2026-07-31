@@ -1,10 +1,10 @@
-"use client"
+﻿"use client"
 import Footer from '@/components/molecules/Footer'
 import InstitucionalPage from '@/features/institucional'
 import HeaderBannerUnique from '@/components/templates/HeaderBannerUnique'
 import { TypeBannerUnique } from '@/components/atoms/Banner/unique'
 import { useBannerQuery } from '@/clients/api/banners'
-import { storageUrl } from '@/constants/storageDomain'
+import { resolveMediaUrl } from '@/lib/media'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
 
 export default function Institucional() {
@@ -13,7 +13,7 @@ export default function Institucional() {
   const Banner: TypeBannerUnique = {
     id: data?.[0]?.id,
     title: data?.[0]?.titulo,
-    image: `${storageUrl}/${data?.[0].url_img}`,
+    image: resolveMediaUrl(data?.[0]?.url_img),
   }
 
   return (

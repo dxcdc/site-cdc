@@ -8,7 +8,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 import CardTagDesc from '@/components/atoms/CardTagDesc'
 import AnimetedSlide from '@/components/animations/slide'
-import { storageUrl } from '@/constants/storageDomain'
+import { resolveMediaUrl } from '@/lib/media'
 import SanitizedHtmlBox from '@/utils/stripHtmlTags'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
 
@@ -27,7 +27,7 @@ export default function NoticiasUniquePage() {
   const Banner = {
     id: 1,
     title: data?.titulo,
-    image: `${storageUrl}/${data?.imagem_capa}`,
+    image: resolveMediaUrl(data?.imagem_capa),
   }
 
   return (

@@ -1,9 +1,11 @@
-import { storageUrl } from "@/constants/storageDomain"
+import { resolveMediaUrl } from '@/lib/media';
 
-export const isStorage = (url: string) => {
-  if (storageUrl?.includes(url)) {
-    return url
-  } else {
-    return `${storageUrl}/${url}`
-  }
-}
+/**
+ * @deprecated Use `resolveMediaUrl` de `@/lib/media` diretamente.
+ *
+ * Mantido por compatibilidade com componentes que ainda usam isStorage().
+ * Delega a lógica para resolveMediaUrl para garantir comportamento consistente.
+ */
+export const isStorage = (url?: string | null): string => {
+  return resolveMediaUrl(url) ?? '';
+};

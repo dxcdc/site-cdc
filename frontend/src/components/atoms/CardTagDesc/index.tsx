@@ -3,7 +3,7 @@ import React, { memo } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import ButtonTag from '../ButtonTag'
-import { storageUrl } from '@/constants/storageDomain'
+import { resolveMediaUrlOrFallback } from '@/lib/media'
 
 interface ICardTagDesc {
   info: any
@@ -25,6 +25,7 @@ function CardTagDesc({
   onclickTag,
 }: ICardTagDesc) {
   const imageNotFound = 'https://ih1.redbubble.net/image.4905811447.8675/flat,750x,075,f-pad,750x1000,f8f8f8.jpg'
+  const imgUrl = (path?: string | null) => resolveMediaUrlOrFallback(path, imageNotFound)
   if (leadership) {
     return (
       <Box display="flex" flexDirection="column" gap="12px" width="100%">
@@ -32,7 +33,7 @@ function CardTagDesc({
           width="100%"
           height="260px"
           sx={{
-            backgroundImage: `url("${storageUrl}/${info?.image ?? imageNotFound}")`,
+            backgroundImage: `url("${imgUrl(info?.image)}")`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
@@ -88,7 +89,7 @@ function CardTagDesc({
           width="100%"
           height="196px"
           sx={{
-            backgroundImage: `url("${storageUrl}/${info?.image ?? imageNotFound}")`,
+            backgroundImage: `url("${imgUrl(info?.image)}")`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
@@ -144,7 +145,7 @@ function CardTagDesc({
           width="100%"
           height="192px"
           sx={{
-            backgroundImage: `url("${storageUrl}/${info?.image ?? imageNotFound}")`,
+            backgroundImage: `url("${imgUrl(info?.image)}")`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
@@ -200,7 +201,7 @@ function CardTagDesc({
           width="100%"
           height="176px"
           sx={{
-            backgroundImage: `url("${storageUrl}/${info?.image ?? imageNotFound}")`,
+            backgroundImage: `url("${imgUrl(info?.image)}")`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
@@ -258,7 +259,7 @@ function CardTagDesc({
           sx={{
             width: '100%',
             height: '100%',
-            backgroundImage: `url("${storageUrl}/${info?.imagem_capa ?? info?.url_imagem ?? info?.url_image_capa}")`,
+            backgroundImage: `url("${imgUrl(info?.imagem_capa ?? info?.url_imagem ?? info?.url_image_capa)}")`,
             backgroundColor: 'gray',
             backgroundSize: 'cover',
             backgroundPosition: 'center',

@@ -6,7 +6,7 @@ import Box from '@mui/material/Box'
 import { useProgramaQuery } from '@/clients/api/programas'
 import LatestNews from '@/components/molecules/LastestNews'
 import Transparency from '@/features/institucional/Transparency'
-import { storageUrl } from '@/constants/storageDomain'
+import { resolveMediaUrl } from '@/lib/media'
 import Typography from '@mui/material/Typography'
 import { useTransparenciaAreaQuery } from '@/clients/api/transparencia'
 import { useNoticiasAreaQuery } from '@/clients/api/noticias'
@@ -28,7 +28,7 @@ export default function ProgramaUniquePage() {
   const Banner = {
     id: 1,
     title: data?.titulo,
-    image: `${storageUrl}/${data?.url_image_capa}`,
+    image: resolveMediaUrl(data?.url_image_capa),
     highlight: data?.subtitulo
   }
 
@@ -61,7 +61,7 @@ export default function ProgramaUniquePage() {
                 borderRadius="32px"
                 sx={{
                   bgcolor: 'gray',
-                  backgroundImage: `url("${storageUrl}/${listImagePrograms?.[0]?.url_imagem}")`,
+                  backgroundImage: `url("${resolveMediaUrl(listImagePrograms?.[0]?.url_imagem)}")`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',
@@ -85,7 +85,7 @@ export default function ProgramaUniquePage() {
                   justifyContent="flex-end"
                   borderRadius="32px"
                   sx={{
-                    backgroundImage: `url("${storageUrl}/${image.url_imagem}")`,
+                    backgroundImage: `url("${resolveMediaUrl(image.url_imagem)}")`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',

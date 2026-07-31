@@ -3,7 +3,7 @@ import Footer from '@/components/molecules/Footer'
 import HeaderBannerUnique from '@/components/templates/HeaderBannerUnique'
 import Noticias from '@/features/noticias'
 import { useBannerQuery } from '@/clients/api/banners'
-import { storageUrl } from '@/constants/storageDomain'
+import { resolveMediaUrl } from '@/lib/media'
 import { TypeBannerUnique } from '@/components/atoms/Banner/unique'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
 
@@ -13,7 +13,7 @@ export default function NoticiasPage() {
   const Banner: TypeBannerUnique = {
     id: data?.[0]?.id,
     title: data?.[0]?.titulo,
-    image: `${storageUrl}/${data?.[0].url_img}`,
+    image: resolveMediaUrl(data?.[0]?.url_img),
   }
 
   return (

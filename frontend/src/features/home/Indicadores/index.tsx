@@ -1,7 +1,7 @@
 "use client";
 import { useBannerQuery } from "@/clients/api/banners";
 import { useIndicadoresQuery } from "@/clients/api/indicadores";
-import { storageUrl } from "@/constants/storageDomain";
+import { resolveMediaUrl } from '@/lib/media';
 import SanitizedHtmlBox from "@/utils/stripHtmlTags";
 import { Box, Typography } from "@mui/material";
 
@@ -17,7 +17,7 @@ export default function BannerFixedBackground() {
         justifyContent: "space-between",
         backgroundImage: `
           linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-          url("${storageUrl}/${bannerData?.[0]?.url_img}")
+          url("${resolveMediaUrl(bannerData?.[0]?.url_img)}")
         `,
         backgroundSize: "cover",
         backgroundPosition: "center",

@@ -8,7 +8,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ButtonAction from '../ButtonAction'
 import CircleIcon from '@mui/icons-material/Circle'
 import { useRouter } from 'next/navigation'
-import { storageUrl } from '@/constants/storageDomain'
+import { resolveMediaUrl } from '@/lib/media'
 import { INoticiasResponse } from '@/clients/api/noticias'
 import AnimationSplitText from '@/components/animations/splitText'
 
@@ -99,7 +99,7 @@ export default function Banner({ data }: { data?: INoticiasResponse }) {
             sx={{
               backgroundImage: `
                 linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-                url("${storageUrl}/${banner?.image}")
+                url("${resolveMediaUrl(banner?.image)}")
               `,
               backgroundSize: 'cover',
               backgroundPosition: 'center',

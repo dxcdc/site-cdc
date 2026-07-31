@@ -9,7 +9,7 @@ import AnimationSplitText from '@/components/animations/splitText'
 import AnimetedSlide from '@/components/animations/slide'
 import AnimatedFade from '@/components/animations/fade'
 import { ILinhaTempo } from '@/clients/api/linha-tempo'
-import { isStorage } from '@/helpers/isStorage'
+import { resolveMediaUrl } from '@/lib/media'
 import { sanitizeHtml } from '@/utils/scriptHtmlSanitize'
 
 export default function Timeline({ listTimeLine }: { listTimeLine?: ILinhaTempo[] }) {
@@ -57,7 +57,7 @@ export default function Timeline({ listTimeLine }: { listTimeLine?: ILinhaTempo[
           {item.imagens[0] && (
             <AnimetedSlide>
               <Box width="100%" height="172px">
-                <ImagesRounded url={isStorage(item.imagens[0])} />
+                <ImagesRounded url={resolveMediaUrl(item.imagens[0]) ?? ''} />
               </Box>
             </AnimetedSlide>
           )}
@@ -70,8 +70,8 @@ export default function Timeline({ listTimeLine }: { listTimeLine?: ILinhaTempo[
                 gap="24px"
                 height="172px"
               >
-                <ImagesRounded url={isStorage(item.imagens[1])} />
-                <ImagesRounded url={isStorage(item.imagens[2])} />
+                <ImagesRounded url={resolveMediaUrl(item.imagens[1]) ?? ''} />
+                <ImagesRounded url={resolveMediaUrl(item.imagens[2]) ?? ''} />
               </Box>
             </AnimetedSlide>
           )}

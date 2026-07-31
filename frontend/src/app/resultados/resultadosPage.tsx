@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useBannerQuery } from '@/clients/api/banners'
 import { getPesquisasList, IPesquisa, usePesquisaQuery } from '@/clients/api/pesquisa'
@@ -9,7 +9,7 @@ import Footer from '@/components/molecules/Footer'
 import ListCards from '@/components/molecules/ListCards'
 import MenuAreasWithSearchInput from '@/components/molecules/MenuAreaWithSearchInput'
 import HeaderBannerUnique from '@/components/templates/HeaderBannerUnique'
-import { storageUrl } from '@/constants/storageDomain'
+import { resolveMediaUrl } from '@/lib/media'
 import { CircularProgress, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import { useSearchParams } from 'next/navigation'
@@ -21,7 +21,7 @@ export default function ResultadosPage() {
   const Banner: TypeBannerUnique = {
     id: dataBanner?.[0]?.id,
     title: dataBanner?.[0]?.titulo,
-    image: `${storageUrl}/${dataBanner?.[0].url_img}`,
+    image: resolveMediaUrl(dataBanner?.[0]?.url_img),
   }
 
   const searchParams = useSearchParams()
@@ -93,7 +93,7 @@ export default function ResultadosPage() {
             <ListCards page="/resultados" list={listPesquisas} />
           ) : (
             <Typography variant="h3" lineHeight={'120%'} textAlign={'center'}>
-              Não foram encontrados resultados para essa pesquisa.
+              NÃ£o foram encontrados resultados para essa pesquisa.
             </Typography>
           )
         )}

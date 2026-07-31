@@ -1,22 +1,48 @@
-const storageDomain = process.env.NEXT_PUBLIC_STORAGE?.replace(/^https?:\/\//, '') || '';
+/**
+ * next.config.js
+ *
+ * Configuração do Next.js para o frontend do site-cdc.
+ *
+ * remotePatterns: permite que o componente <Image /> carregue imagens de origens externas.
+ * Necessário para imagens do backend Express (/uploads) e do legado GCS.
+ *
+ * ATENÇÃO: NEXT_PUBLIC_* são lidas no momento do build, não em runtime.
+ * Quaisquer alterações exigem rebuild do container.
+ */
 
-module.exports = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   output: 'standalone',
   reactStrictMode: true,
-  env: {
-    baseUrlDomain: process.env.NEXT_PUBLIC_API_URL,
-    baseStorage: process.env.NEXT_PUBLIC_STORAGE,
-  },
+
   images: {
     remotePatterns: [
+      // Backend Express (desenvolvimento local)
       {
-        protocol: 'https',
-        hostname: storageDomain,
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '5000',
+        pathname: '/uploads/**',
       },
+      // Backend Express sem porta específica (proxies, produção)
       {
         protocol: 'http',
         hostname: 'localhost',
       },
+      // Legado: Google Cloud Storage (imagens antigas ainda referenciadas pelo banco)
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        pathname: '/cdc-site/**',
+      },
+      // Produção: domínio público da API (ajustar conforme o ambiente)
+      // Exemplo: api.ongcdc.org.br ou IP do servidor
+      {
+        protocol: 'https',
+        hostname: '**.ongcdc.org.br',
+      },
     ],
   },
 };
+
+module.exports = nextConfig;

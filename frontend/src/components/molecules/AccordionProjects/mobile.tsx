@@ -9,7 +9,7 @@ import AddIcon from '@mui/icons-material/Add'
 import AnimetedSlide from '@/components/animations/slide'
 import { IPrograma } from '@/clients/api/programas'
 import { useRouter } from 'next/navigation'
-import { storageUrl } from '@/constants/storageDomain'
+import { resolveMediaUrl } from '@/lib/media'
 import SanitizedHtmlBox from '@/utils/stripHtmlTags'
 
 export default function AccordionProjectsMobile({
@@ -161,7 +161,7 @@ export default function AccordionProjectsMobile({
               height: '480px',
               borderRadius: '32px',
               backgroundColor: background.default,
-              backgroundImage: `url("${storageUrl}/${expandedAccordion?.url_image_capa ?? ""}")`,
+              backgroundImage: `url("${resolveMediaUrl(expandedAccordion?.url_image_capa) ?? ''}")`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',

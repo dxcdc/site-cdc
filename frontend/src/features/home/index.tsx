@@ -14,10 +14,9 @@ import LatestNews from '@/components/molecules/LastestNews'
 import AnimationSplitText from '@/components/animations/splitText'
 import AnimetedSlide from '@/components/animations/slide'
 import { useCardsInformativosListQuery } from '@/clients/api/cards-informativos'
-import { storageUrl } from '@/constants/storageDomain'
+import { resolveMediaUrl } from '@/lib/media'
 import Indicadores from './Indicadores'
 import { useOrganizacaoListQuery } from '@/clients/api/organizacao'
-import { isStorage } from '@/helpers/isStorage'
 import { useNoticiasListQuery } from '@/clients/api/noticias'
 import { useConteudoSecaoQuery } from '@/clients/api/conteudo-secao'
 import SanitizedHtmlBox from '@/utils/stripHtmlTags'
@@ -33,13 +32,13 @@ export default function HomePage() {
   const cardOptions = [
     {
       id: 0,
-      image: cardMissao?.url_imagem ? `${storageUrl}/${cardMissao?.url_imagem}` : MissionImage,
+      image: cardMissao?.url_imagem ? resolveMediaUrl(cardMissao?.url_imagem) : MissionImage,
       title: cardMissao?.titulo,
       description: cardMissao?.descricao
     },
     {
       id: 1,
-      image: cardVisao?.url_imagem ? `${storageUrl}/${cardVisao?.url_imagem}` : VisionImage,
+      image: cardVisao?.url_imagem ? resolveMediaUrl(cardVisao?.url_imagem) : VisionImage,
       title: cardVisao?.titulo,
       description: cardVisao?.descricao
     },
@@ -92,7 +91,7 @@ export default function HomePage() {
           >
             <AnimetedSlide distance={100} tension={10} friction={5} threshold={0.8}>
               <Box width="100%" height="172px">
-                <ImagesRounded url={isStorage(card.imagens[0])} />
+                <ImagesRounded url={resolveMediaUrl(card.imagens[0]) ?? ''} />
               </Box>
             </AnimetedSlide>
             <AnimetedSlide distance={100} tension={10} friction={5} threshold={0.8}>
@@ -103,8 +102,8 @@ export default function HomePage() {
                 gap="24px"
                 height="172px"
               >
-                <ImagesRounded url={isStorage(card.imagens[1])} />
-                <ImagesRounded url={isStorage(card.imagens[2])} />
+                <ImagesRounded url={resolveMediaUrl(card.imagens[1]) ?? ''} />
+                <ImagesRounded url={resolveMediaUrl(card.imagens[2]) ?? ''} />
               </Box>
             </AnimetedSlide>
           </Box>

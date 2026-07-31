@@ -9,7 +9,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import AddIcon from '@mui/icons-material/Add'
 import AnimetedSlide from '@/components/animations/slide'
 import { IPrograma } from '@/clients/api/programas'
-import { storageUrl } from '@/constants/storageDomain'
+import { resolveMediaUrl } from '@/constants/../lib/media'
 import { useRouter } from 'next/navigation'
 import { useTheme } from '@mui/material'
 
@@ -171,7 +171,7 @@ export default function AccordionProjectsDesktop({
           width: '50%',
           borderRadius: '32px',
           backgroundColor: background.default,
-          backgroundImage: `url("${storageUrl}/${expandedAccordion?.url_image_capa ?? "https://support.heberjahiz.com/hc/article_attachments/21013076295570"}")`,
+          backgroundImage: `url("${resolveMediaUrl(expandedAccordion?.url_image_capa) ?? 'https://support.heberjahiz.com/hc/article_attachments/21013076295570'}")`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
