@@ -56,7 +56,12 @@ export default function NavbarMobile({ menuOptions, setOpen }: INavbarMobile) {
               width: '100%',
               justifyContent: 'flex-start',
             }}
-            onClick={() => item.link && push(item.link)}
+            onClick={() => {
+              if (item.link) {
+                push(item.link)
+                setOpen(false)
+              }
+            }}
           >
             <Typography
               textTransform="capitalize"
