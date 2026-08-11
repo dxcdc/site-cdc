@@ -24,7 +24,7 @@ const NoticiaPreview = (props) => {
       el.style.fontFamily = "'Segoe UI', Roboto, sans-serif";
       el.style.fontSize = '14px';
       el.style.lineHeight = '1.5';
-      el.style.color = '#333';
+      el.style.color = 'var(--cdc-content-text, #333)';
       el.style.margin = '0 0 8px 0';
     });
 
@@ -52,13 +52,14 @@ const NoticiaPreview = (props) => {
 
   return (
     <Box
+      className="cdc-news-preview"
       style={{
         maxWidth: '320px',
-        border: '1px solid #e0e0e0',
+        border: '1px solid var(--cdc-topbar-border, #e0e0e0)',
         borderRadius: '8px',
         overflow: 'hidden',
         transition: 'all 0.3s ease',
-        background: 'white',
+        background: 'var(--cdc-surface, white)',
         ':hover': {
           boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
         }
@@ -68,8 +69,8 @@ const NoticiaPreview = (props) => {
       <Box
         style={{
           padding: '12px 16px',
-          background: '#f8f9fa',
-          borderBottom: '1px solid #e0e0e0'
+          background: 'var(--cdc-preview-muted, #f8f9fa)',
+          borderBottom: '1px solid var(--cdc-topbar-border, #e0e0e0)'
         }}
       >
 
@@ -77,7 +78,7 @@ const NoticiaPreview = (props) => {
           fontWeight="bold"
           fontSize={16}
           style={{
-            color: '#A7181D',
+            color: 'var(--cdc-preview-title, #A7181D)',
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
@@ -104,10 +105,10 @@ const NoticiaPreview = (props) => {
       <Box
         style={{
           padding: '8px 16px',
-          background: '#f8f9fa',
-          borderTop: '1px solid #e0e0e0',
+          background: 'var(--cdc-preview-muted, #f8f9fa)',
+          borderTop: '1px solid var(--cdc-topbar-border, #e0e0e0)',
           fontSize: '12px',
-          color: '#666',
+          color: 'var(--cdc-muted, #666)',
           display: 'flex',
           justifyContent: 'space-between'
         }}

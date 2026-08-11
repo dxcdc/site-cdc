@@ -45,18 +45,18 @@
   margin: 0;
 }
 
-.se-image-container {
+.sun-editor-editable .se-image-container {
   display: inline-block !important;
   margin-right: 10px;
   vertical-align: top;
 }
 
-.se-image-container figure {
+.sun-editor-editable .se-image-container figure {
   margin: 0;
   width: auto !important;
 }
 
-.se-image-container img {
+.sun-editor-editable .se-image-container img {
   display: inline-block !important;
   max-width: 150px !important;
   height: auto !important;

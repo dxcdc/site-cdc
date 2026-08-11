@@ -6,7 +6,7 @@ import { Categoria } from './categoria.js';
 import { ConteudoSecao } from './conteudo_secao.js';
 import { DadosBancario } from './dados_bancarios.js';
 import { Email } from './email.js';
-import { Inidicador } from './indicador.js';
+import { Indicador } from './indicador.js';
 import { Lideranca } from './lideranca.js';
 import { LinhaDoTempo } from './linha_do_tempo.js';
 import { LinhaDoTempoImagem } from './linha_do_tempo_imagens.js';
@@ -42,7 +42,7 @@ export function initializeModels(sequelize) {
     Lideranca: Lideranca.init(sequelize),
     CardInformativo: CardInformativo.init(sequelize),
     Email: Email.init(sequelize),
-    Inidicador: Inidicador.init(sequelize),
+    Indicador: Indicador.init(sequelize),
     Organizacao: Organizacao.init(sequelize),
     OrganizacaoImagem: OrganizacaoImagem.init(sequelize),
     Capa: Capa.init(sequelize),

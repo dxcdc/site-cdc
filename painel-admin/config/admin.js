@@ -13,6 +13,14 @@ AdminJS.registerAdapter({ Database, Resource })
 
 const models = initializeModels(sequelize)
 
+const adminNavigation = {
+    configuracoes: { name: 'Configurações', icon: 'Settings' },
+    inicio: { name: 'Início', icon: 'Home' },
+    institucional: { name: 'Institucional', icon: 'Users' },
+    programas: { name: 'Programas', icon: 'Layers' },
+    informeSe: { name: 'Informe-se', icon: 'BookOpen' },
+}
+
 const areaDeAtuacaoProperty = {
     reference: 'areas',
     isVisible: { list: true, edit: true, filter: true, show: true },
@@ -25,16 +33,30 @@ const areaDeAtuacaoProperty = {
 };
 
 export const adminJs = new AdminJS({
+    pages: {
+        googleAccess: {
+            label: 'Acesso Google',
+            component: Components.GoogleAccessPage,
+            icon: 'Shield',
+            handler: async () => ({}),
+        },
+    },
+    dashboard: {
+        component: Components.CdcDashboard,
+    },
     assets: {
         styles: [
-            '/css/suneditor.min.css',
-            '/css/editor-custom.css',
+            '/admin/css/suneditor.min.css',
+            '/admin/css/editor-custom.css?v=2',
+            '/admin/css/admin-navigation.css?v=9',
+            '/admin/css/admin-topbar.css?v=7',
         ], // 👈 adiciona aqui
+        scripts: ['/admin/js/admin-navigation.js?v=8', '/admin/js/admin-topbar.js?v=6'],
     },
     resources: [
         {
             resource: models.Area, options: {
-                navigation: 'Configurações',
+                navigation: adminNavigation.configuracoes,
                 properties: {
                     nome: {
                         isTitle: true
@@ -54,7 +76,7 @@ export const adminJs = new AdminJS({
                 }),
             ],
             options: {
-                navigation: 'Inicio',
+                navigation: adminNavigation.inicio,
                 id: 'Organizacao',
                 listProperties: ['id', 'titulo', 'descricao', 'imagem_url'],
                 newProperties: ['titulo', 'descricao', 'uploadImagens'],
@@ -215,7 +237,7 @@ export const adminJs = new AdminJS({
                 }),
             ],
             options: {
-                navigation: 'Inicio',
+                navigation: adminNavigation.inicio,
                 properties: {
                     ...createImageUploadProperties()
                 },
@@ -233,7 +255,7 @@ export const adminJs = new AdminJS({
                 }),
             ],
             options: {
-                navigation: 'Institucional',
+                navigation: adminNavigation.institucional,
 
                 // Definimos explicitamente os campos para cada ação
                 newProperties: ['titulo', 'ano', 'conteudo', 'uploadImagens'],
@@ -419,7 +441,7 @@ export const adminJs = new AdminJS({
                 }),
             ],
             options: {
-                navigation: 'Institucional',
+                navigation: adminNavigation.institucional,
                 id: 'CardInformativo',
                 properties: {
                     ...createImageUploadProperties()
@@ -456,7 +478,7 @@ export const adminJs = new AdminJS({
                 }),
             ],
             options: {
-                navigation: 'Institucional',
+                navigation: adminNavigation.institucional,
                 id: 'Lideranca',
 
                 properties: {
@@ -536,7 +558,7 @@ export const adminJs = new AdminJS({
         {
             resource: models.Transparencia,
             options: {
-                navigation: 'Institucional',
+                navigation: adminNavigation.institucional,
                 id: 'Transparencia',
                 properties: {
                     areaDeAtuacao: areaDeAtuacaoProperty,
@@ -576,7 +598,7 @@ export const adminJs = new AdminJS({
         {
             resource: models.PerguntaFrequente,
             options: {
-                navigation: 'Institucional',
+                navigation: adminNavigation.institucional,
                 properties: {
                     pergunta:  { type: 'textarea' },
                     resposta: { type: 'textarea' },
@@ -598,7 +620,7 @@ export const adminJs = new AdminJS({
         {
             resource: models.Oportunidade,
             options: {
-                navigation: 'Institucional',
+                navigation: adminNavigation.institucional,
                 id: 'Oportunidade',
                 properties: {
                     titulo: {
@@ -641,7 +663,7 @@ export const adminJs = new AdminJS({
 
             ],
             options: {
-                navigation: 'Programas',
+                navigation: adminNavigation.programas,
 
                 newProperties: ['titulo', 'subtitulo', 'resumo', 'descricao', 'areaDeAtuacao', 'uploadCapa', 'uploadImagens', 'is_ativo'],
                 editProperties: ['titulo', 'subtitulo', 'resumo', 'descricao', 'areaDeAtuacao', 'uploadCapa', 'uploadImagens', 'is_ativo'],
@@ -788,7 +810,7 @@ export const adminJs = new AdminJS({
         {
             resource: models.DadosBancario,
             options: {
-                navigation: 'Configurações',
+                navigation: adminNavigation.configuracoes,
                 id: 'DadosBancario',
                 properties: {
                     ...createImageUploadProperties()
@@ -817,12 +839,12 @@ export const adminJs = new AdminJS({
             ],
 
         },
-        { resource: models.Email, options: { navigation: 'Configurações', id: 'Email' } },
+        { resource: models.Email, options: { navigation: adminNavigation.configuracoes, id: 'Email' } },
         {
-            resource: models.Inidicador,
+            resource: models.Indicador,
             options: {
-                navigation: 'Inicio',
-                id: 'Inidicador',
+                navigation: adminNavigation.inicio,
+                id: 'Indicador',
                 editProperties: [
                     'quantidade',
                     'descricao',
@@ -847,7 +869,7 @@ export const adminJs = new AdminJS({
                 }),
             ],
             options: {
-                navigation: 'Configurações',
+                navigation: adminNavigation.configuracoes,
                 id: 'Capa',
                 properties: {
                     uploadImagem: {
@@ -890,14 +912,14 @@ export const adminJs = new AdminJS({
             resource: models.ConteudoSecao,
             options: {
                 id: 'ConteudoSecao', // 👈 define o ID esperado para tradução
-                navigation: 'Configurações',
+                navigation: adminNavigation.configuracoes,
                 editProperties: [
                     'titulo',
                     'resumo'
                 ]
             },
         },
-        { resource: models.Rodape, options: { navigation: 'Inicio', id: 'Rodape' } },
+        { resource: models.Rodape, options: { navigation: adminNavigation.inicio, id: 'Rodape' } },
         {
             resource: models.Publicacao,
             features: [
@@ -908,7 +930,7 @@ export const adminJs = new AdminJS({
                 }),
             ],
             options: {
-                navigation: 'Informe-se',
+                navigation: adminNavigation.informeSe,
                 properties: {
                     areaDeAtuacao: areaDeAtuacaoProperty,
                     area_ids: {
@@ -952,7 +974,7 @@ export const adminJs = new AdminJS({
                 }),
             ],
             options: {
-                navigation: 'Informe-se',
+                navigation: adminNavigation.informeSe,
                 id: 'Noticia',
                 actions: {
                     new: {
@@ -985,13 +1007,21 @@ export const adminJs = new AdminJS({
                 },
                 properties: {
                     html_original: {
+                        label: 'Conteúdo da notícia',
                         components: {
                             edit: Components.ConteudoEditor,
                             list: Components.NoticiaPreview,
+                            show: Components.NoticiaShow,
                         },
                         isVisible: { list: true, edit: true, filter: false, show: true },
                     },
-                    areaDeAtuacao: areaDeAtuacaoProperty,
+                    areaDeAtuacao: {
+                        ...areaDeAtuacaoProperty,
+                        components: {
+                            ...areaDeAtuacaoProperty.components,
+                            show: Components.NoticiaAreaShow,
+                        },
+                    },
                     conteudo: {
                         isVisible: false
                     },
@@ -1006,14 +1036,26 @@ export const adminJs = new AdminJS({
                     },
 
                     imagem_capa: {
+                        label: 'Imagem de capa',
                         isVisible: { list: true, show: true, edit: false },
                         components: {
                             list: Components.ImageListPreview,
-                            show: Components.ImageListPreview,
+                            show: Components.NoticiaCoverShow,
                         },
                     },
                     titulo: {
-                        isVisible: false
+                        label: 'Título',
+                        isVisible: { list: false, show: true, edit: false, filter: false }
+                    },
+                    data_publicacao: {
+                        label: 'Data de publicação',
+                        isVisible: { list: false, show: true, edit: false, filter: false }
+                    },
+                    tempo_leitura: {
+                        label: 'Tempo de leitura (minutos)'
+                    },
+                    autor: {
+                        label: 'Autor'
                     },
                     tipo: {
                         isVisible: false
@@ -1021,7 +1063,7 @@ export const adminJs = new AdminJS({
 
                 },
                 editProperties: ['html_original', 'areaDeAtuacao', 'autor', 'uploadCapa'],
-                showProperties: ['areaDeAtuacao', 'tempo_leitura', 'uploadCapa', 'autor', 'html_original']
+                showProperties: ['titulo', 'data_publicacao', 'areaDeAtuacao', 'tempo_leitura', 'imagem_capa', 'autor', 'html_original']
 
 
             }
@@ -1033,7 +1075,7 @@ export const adminJs = new AdminJS({
 
     branding: {
         companyName: 'CDC',
-        logo: '/assets/logo_cdc_atualizada.svg',
+        logo: '/admin/assets/logo_cdc_atualizada.svg',
         theme: {
             colors: {
                 // Light Mode (default)
@@ -1063,6 +1105,9 @@ export const adminJs = new AdminJS({
         localeDetection: true,
         translations: {
             'pt-BR': {
+                pages: {
+                    googleAccess: 'Acesso Google',
+                },
                 labels: {
                     loginWelcome: 'Bem-vindo ao Painel',
                     Colaborador: 'Colaboradores',
@@ -1077,7 +1122,7 @@ export const adminJs = new AdminJS({
                     Lideranca: 'Lideranças',
                     Transparencia: 'Transparência',
                     Capa: 'Banners',
-                    Inidicador: 'Indicadores',
+                    Indicador: 'Indicadores',
                     Oportunidade: 'Trabalhe conosco',
                     CardInformativo: 'Estrutura Organizacional'
                 },
@@ -1116,6 +1161,12 @@ export const adminJs = new AdminJS({
                 },
                 properties: {
                     areaDeAtuacao: 'Área de Atuação',
+                    titulo: 'Título',
+                    data_publicacao: 'Data de publicação',
+                    tempo_leitura: 'Tempo de leitura (minutos)',
+                    imagem_capa: 'Imagem de capa',
+                    html_original: 'Conteúdo da notícia',
+                    autor: 'Autor',
                     url_imagem: 'URL da Imagem',
                     cargo: 'Cargo',
                     nome: 'Nome',
@@ -1143,7 +1194,5 @@ export const adminJs = new AdminJS({
     },
     componentLoader,
 });
-
-adminJs.watch();
 
 export const adminRouter = AdminJSExpress.buildRouter(adminJs)
