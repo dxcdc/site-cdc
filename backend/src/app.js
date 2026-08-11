@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
+import crypto from "crypto";
 import routes from "./routes/index.js";
 import db from "./models/index.js";
 
@@ -9,7 +10,17 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+const allowedOrigins = (process.env.CORS_ORIGINS || "http://localhost:3000,http://localhost:3001")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error("Origin não permitida pelo CORS"));
+  },
+}));
 app.use(express.json());
 
 // Servir arquivos estáticos de upload local (uploads e fallback em public/assets)
@@ -29,29 +40,49 @@ app.get("/", (req, res) => {
   });
 });
 
+app.get("/api/health", async (req, res) => {
+  try {
+    await db.sequelize.query("SELECT 1");
+    return res.json({ status: "ok", service: "cdc-backend", database: "connected" });
+  } catch (error) {
+    console.error("Falha no healthcheck:", error.message);
+    return res.status(503).json({ status: "error", service: "cdc-backend", database: "unavailable" });
+  }
+});
+
+app.use("/api", (req, res, next) => {
+  if (["GET", "HEAD", "OPTIONS"].includes(req.method)) return next();
+  if (req.method === "POST" && ["/contato", "/candidatura"].includes(req.path)) return next();
+
+  const expectedKey = process.env.API_INTEGRATION_KEY;
+  const suppliedKey = req.get("x-api-key");
+  if (!expectedKey || !suppliedKey) return res.status(401).json({ error: "Não autorizado" });
+
+  const expected = Buffer.from(expectedKey);
+  const supplied = Buffer.from(suppliedKey);
+  if (expected.length !== supplied.length || !crypto.timingSafeEqual(expected, supplied)) {
+    return res.status(401).json({ error: "Não autorizado" });
+  }
+  return next();
+});
+
 app.use("/api", routes);
 
-// Testa a conexão com o banco
-(async () => {
+app.use((error, req, res, next) => {
+  if (error.message === "Origin não permitida pelo CORS") {
+    return res.status(403).json({ error: error.message });
+  }
+  return next(error);
+});
+
+export async function connectDatabase() {
   try {
     await db.sequelize.authenticate();
     console.log("✅ Conexão com o banco estabelecida com sucesso!");
-    
-    // Auto-criar tabelas no banco de dados se não existirem
-    await db.sequelize.sync();
-    console.log("📊 Esquema de banco de dados verificado com sucesso!");
-    
-    // Teste adicional - execute uma query simples
-    const [results] = await db.sequelize.query("SELECT current_user");
-    console.log("👤 Usuário conectado:", results[0].current_user);
   } catch (error) {
-    console.error("❌ Falha na conexão:", {
-      message: error.message,
-      original: error.original,
-      config: db.sequelize.config // Mostra a configuração usada
-    });
-    process.exit(1);
+    console.error("❌ Falha na conexão com o banco:", error.message);
+    throw error;
   }
-})();
+}
 
 export default app;

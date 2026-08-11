@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # 1. Banco de Dados PostgreSQL Containerizado
   postgres:
@@ -7,15 +5,15 @@ services:
     container_name: site_cdc_postgres
     restart: always
     environment:
-      POSTGRES_DB: ${DB_NAME:-site_cdc_db}
-      POSTGRES_USER: ${DB_USER:-cdc_user}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-cdc_password}
+      POSTGRES_DB: ${DB_NAME:?DB_NAME deve ser configurado}
+      POSTGRES_USER: ${DB_USER:?DB_USER deve ser configurado}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD deve ser configurado}
     ports:
-      - "5432:5432"
+      - "${DATABASE_BIND_ADDRESS:-127.0.0.1}:${PORT_DATABASE:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-cdc_user} -d ${DB_NAME:-site_cdc_db}"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:?DB_USER deve ser configurado} -d ${DB_NAME:?DB_NAME deve ser configurado}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -31,14 +29,16 @@ services:
       NODE_ENV: ${NODE_ENV:-production}
       PORT: 8080
       DB_HOST: postgres
-      DB_USER: ${DB_USER:-cdc_user}
-      DB_NAME: ${DB_NAME:-site_cdc_db}
-      DB_PASSWORD: ${DB_PASSWORD:-cdc_password}
+      DB_USER: ${DB_USER:?DB_USER deve ser configurado}
+      DB_NAME: ${DB_NAME:?DB_NAME deve ser configurado}
+      DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD deve ser configurado}
       EMAIL_FROM: ${EMAIL_FROM}
       EMAIL_PASSWORD: ${EMAIL_PASSWORD}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000,http://localhost:3001}
+      API_INTEGRATION_KEY: ${API_INTEGRATION_KEY:-}
       LOCAL_STORAGE_PATH: /app/uploads
     ports:
-      - "${PORT_BACKEND:-5001}:8080"
+      - "${BIND_ADDRESS:-127.0.0.1}:${PORT_BACKEND:-5001}:8080"
     volumes:
       - ./backend/src:/app/src:z
       - ./uploads:/app/uploads:z
@@ -46,6 +46,11 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:8080/api/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   # 3. Painel Administrativo AdminJS
   painel-admin:
@@ -58,17 +63,18 @@ services:
       NODE_ENV: ${NODE_ENV:-production}
       PORT: 8080
       DB_HOST: postgres
-      DB_USER: ${DB_USER:-cdc_user}
-      DB_NAME: ${DB_NAME:-site_cdc_db}
-      DB_PASSWORD: ${DB_PASSWORD:-cdc_password}
+      DB_USER: ${DB_USER:?DB_USER deve ser configurado}
+      DB_NAME: ${DB_NAME:?DB_NAME deve ser configurado}
+      DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD deve ser configurado}
       ADMIN_EMAIL: ${ADMIN_EMAIL}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD}
-      COOKIE_SECRET: ${COOKIE_SECRET:-secret_cookie_cdc_key}
-      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      COOKIE_SECRET: ${COOKIE_SECRET}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      GOOGLE_ALLOWED_EMAILS: ${GOOGLE_ALLOWED_EMAILS:-}
       BASE_URL: ${BASE_URL:-http://localhost:3001}
     ports:
-      - "${PORT_ADMIN:-3001}:8080"
+      - "${BIND_ADDRESS:-127.0.0.1}:${PORT_ADMIN:-3001}:8080"
     volumes:
       - ./painel-admin/config:/usr/src/app/config:z
       - ./painel-admin/routes:/usr/src/app/routes:z
@@ -92,10 +98,10 @@ services:
     environment:
       NODE_ENV: production
     ports:
-      - "${PORT_FRONTEND:-3000}:3000"
+      - "${BIND_ADDRESS:-127.0.0.1}:${PORT_FRONTEND:-3000}:3000"
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
 
 volumes:
   postgres_data:
-  uploads_data:

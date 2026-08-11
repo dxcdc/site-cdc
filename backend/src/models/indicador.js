@@ -1,14 +1,14 @@
 
 import { DataTypes, Model } from "sequelize";
 
-class Inidicador extends Model {
+class Indicador extends Model {
   static init(sequelize) {
     return super.init({
       descricao: DataTypes.STRING,
       quantidade: DataTypes.INTEGER,
     }, {
       sequelize,
-      tableName: "inidicador",
+      tableName: "indicadores",
       timestamps: false,
     });
   }
@@ -17,4 +17,4 @@ class Inidicador extends Model {
   }
 }
 
-export default Inidicador;
+export default Indicador;

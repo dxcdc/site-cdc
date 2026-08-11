@@ -44,7 +44,6 @@ class ContatoFormController {
             };
 
             await transporter.sendMail(mailOptions);
-            res.setHeader('Access-Control-Allow-Origin', '*');
             res.status(200).json({ message: 'Mensagem enviada com sucesso' });
             // return res.json({ message: 'Mensagem enviada com sucesso!' });
 

@@ -1,7 +1,12 @@
-import app from "./src/app.js";
+import app, { connectDatabase } from "./src/app.js";
 
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, ()=>{
-    console.log("servidor rodando");
-})
+try {
+    await connectDatabase();
+    app.listen(PORT, () => {
+        console.log(`CDC Backend Express API rodando na porta ${PORT}`);
+    });
+} catch {
+    process.exit(1);
+}
