@@ -17,7 +17,7 @@ export default function Transparency({ listTransparencia, sectionInfo }: { listT
   return (
     <Box overflow={"hidden"} width={"100%"} maxWidth={"100vw"}>
       {listTransparencia?.data && (
-        <Box display="flex" flexDirection="column" gap="16px" pb="24px" id="transparent">
+        <Box display="flex" flexDirection="column" gap="16px" pb="24px" id="transparencia">
           <AnimationSplitText direction='down'>
             <Typography variant="h3" color="primary" width="100%">
               {sectionInfo?.titulo ?? "Transparência"}

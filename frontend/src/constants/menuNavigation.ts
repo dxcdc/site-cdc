@@ -24,9 +24,9 @@ export const MenuOptions = [
     link: "/institucional",
     subMenus: [
       { id: 10, label: 'Linha do tempo', scrollView: 'timeline' },
-      { id: 11, label: 'Estrutura organizacional', scrollView: 'organizationCdc' },
-      { id: 12, label: 'Lideranças', scrollView: 'leadership' },
-      { id: 13, label: 'Transparência', scrollView: 'transparent' },
+      { id: 11, label: 'Estrutura organizacional', scrollView: 'organizacao' },
+      { id: 12, label: 'Lideranças', scrollView: 'liderancas' },
+      { id: 13, label: 'Transparência', scrollView: 'transparencia' },
       { id: 14, label: 'Perguntas frequentes', scrollView: 'faq' },
       { id: 15, label: 'Trabalhe conosco', link: 'trabalhe-conosco' },
     ],

@@ -24,8 +24,7 @@ function CardTagDesc({
   onclick,
   onclickTag,
 }: ICardTagDesc) {
-  const imageNotFound = 'https://ih1.redbubble.net/image.4905811447.8675/flat,750x,075,f-pad,750x1000,f8f8f8.jpg'
-  const imgUrl = (path?: string | null) => resolveMediaUrlOrFallback(path, imageNotFound)
+  const imgUrl = (path?: string | null) => resolveMediaUrlOrFallback(path)
   if (leadership) {
     return (
       <Box display="flex" flexDirection="column" gap="12px" width="100%">
@@ -285,6 +284,21 @@ function CardTagDesc({
         >
           {info?.titulo ?? "Título não informado"}
         </Typography>
+        {(info?.autor || info?.data_publicacao || info?.tempo_leitura) && (
+          <Box display="flex" gap="8px" flexWrap="wrap" mt="6px">
+            {info?.autor && (
+              <Typography variant="caption" color="text.secondary">Por {info.autor}</Typography>
+            )}
+            {info?.data_publicacao && (
+              <Typography variant="caption" color="text.secondary">
+                {new Intl.DateTimeFormat('pt-BR').format(new Date(info.data_publicacao))}
+              </Typography>
+            )}
+            {info?.tempo_leitura && (
+              <Typography variant="caption" color="text.secondary">{info.tempo_leitura} min de leitura</Typography>
+            )}
+          </Box>
+        )}
       </Box>
     </Box>
   )

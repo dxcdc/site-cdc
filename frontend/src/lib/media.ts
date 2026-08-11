@@ -12,8 +12,8 @@
  *   "parceiros/6-logo_(3)_(1).png"
  *
  * URL gerada:
- *   "http://localhost:5000/uploads/banners/18-IMG_7339_(1).jpg"
- *   "https://api.ongcdc.org.br/uploads/noticias/100-IMG_0711.jpg"
+ *   "http://localhost:5001/uploads/banners/18-IMG_7339_(1).jpg"
+ *   "https://super.cdc.org.br/uploads/noticias/100-IMG_0711.jpg"
  */
 
 const API_URL =
@@ -52,7 +52,7 @@ export function resolveMediaUrl(path?: string | null): string | null {
  */
 export function resolveMediaUrlOrFallback(
   path?: string | null,
-  fallback = 'https://ih1.redbubble.net/image.4905811447.8675/flat,750x,075,f-pad,750x1000,f8f8f8.jpg'
+  fallback = '/media-placeholder.svg'
 ): string {
   return resolveMediaUrl(path) ?? fallback;
 }

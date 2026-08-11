@@ -3,7 +3,8 @@ import Footer from '@/components/molecules/Footer'
 import HeaderBannerUnique from '@/components/templates/HeaderBannerUnique'
 import { useParams, useRouter } from 'next/navigation'
 import { INoticias, useNoticiaQuery, useNoticiasAreaQuery } from '@/clients/api/noticias'
-import { Box, Grid, Typography, useTheme } from '@mui/material'
+import { Box, Button, Grid, Typography, useTheme } from '@mui/material'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 import CardTagDesc from '@/components/atoms/CardTagDesc'
@@ -11,6 +12,7 @@ import AnimetedSlide from '@/components/animations/slide'
 import { resolveMediaUrl } from '@/lib/media'
 import SanitizedHtmlBox from '@/utils/stripHtmlTags'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
+import { useEffect } from 'react'
 
 dayjs.locale('pt-br')
 
@@ -23,6 +25,10 @@ export default function NoticiasUniquePage() {
   const { push } = useRouter()
 
   const dataFormatada = dayjs(data?.data_publicacao).format('D [de] MMMM [de] YYYY')
+
+  useEffect(() => {
+    if (data?.titulo) document.title = `${data.titulo} | CDC`
+  }, [data?.titulo])
 
   const Banner = {
     id: 1,
@@ -44,12 +50,24 @@ export default function NoticiasUniquePage() {
               <Typography variant='body1' color="text.secondary" fontWeight={400}>
                 {data?.tempo_leitura} min de leitura
               </Typography>
+              {data?.autor && (
+                <Typography variant='body1' color="text.secondary" fontWeight={400}>
+                  Por {data.autor}
+                </Typography>
+              )}
               {data?.areas?.map(area => (
                 <Typography key={area.id} variant='body1' display={{ xs: "none", sm: "none", md: "block" }} color="text.secondary" fontWeight={400}>
                   {area.nome}
                 </Typography>
               ))}
             </Box>
+            <Button
+              startIcon={<ArrowBackIcon />}
+              onClick={() => push('/noticias')}
+              sx={{ mb: '24px' }}
+            >
+              Voltar para notícias
+            </Button>
             <SanitizedHtmlBox html={data.html_original} />
             <Box
               pt="64px"

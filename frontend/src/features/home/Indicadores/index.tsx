@@ -1,7 +1,7 @@
 "use client";
 import { useBannerQuery } from "@/clients/api/banners";
 import { useIndicadoresQuery } from "@/clients/api/indicadores";
-import { resolveMediaUrl } from '@/lib/media';
+import { resolveMediaUrlOrFallback } from '@/lib/media';
 import SanitizedHtmlBox from "@/utils/stripHtmlTags";
 import { Box, Typography } from "@mui/material";
 
@@ -17,7 +17,7 @@ export default function BannerFixedBackground() {
         justifyContent: "space-between",
         backgroundImage: `
           linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-          url("${resolveMediaUrl(bannerData?.[0]?.url_img)}")
+          url("${resolveMediaUrlOrFallback(bannerData?.[0]?.url_img)}")
         `,
         backgroundSize: "cover",
         backgroundPosition: "center",
@@ -68,7 +68,7 @@ export default function BannerFixedBackground() {
               minWidth={{ xs: "148px", sm: "200px" }}
               marginBottom={index === 2 ? "calc(78vh - 94px)" : ""}
             >
-              <Typography variant="h1" color="primary" pb="8px">
+              <Typography component="p" variant="h1" color="primary" pb="8px">
                 {item.quantidade}
               </Typography>
               <Typography

@@ -3,7 +3,7 @@ import React from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { useTheme } from '@mui/material'
-import SanitizedHtmlBox from '@/utils/stripHtmlTags'
+import { resolveMediaUrlOrFallback } from '@/lib/media'
 
 export interface IBannerUnique {
   Banner: TypeBannerUnique
@@ -20,6 +20,9 @@ export default function BannerUnique({ Banner }: IBannerUnique) {
   const {
     palette: { background },
   } = useTheme()
+  const title = Banner?.title
+    ? new DOMParser().parseFromString(Banner.title, 'text/html').body.textContent?.trim()
+    : ''
 
   return (
     <Box
@@ -41,7 +44,7 @@ export default function BannerUnique({ Banner }: IBannerUnique) {
           sx={{
             backgroundImage: `
               linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-              url("${Banner.image}")
+              url("${resolveMediaUrlOrFallback(Banner.image)}")
             `,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
@@ -63,6 +66,7 @@ export default function BannerUnique({ Banner }: IBannerUnique) {
             width="100%"
           >
             <Typography
+              component="h1"
               maxWidth="790px"
               lineHeight="120%"
               variant="h2"
@@ -73,10 +77,7 @@ export default function BannerUnique({ Banner }: IBannerUnique) {
               }}
               color={'primary.light'}
             >
-              <SanitizedHtmlBox
-                initialFontScale={2.7}
-                html={Banner?.title}
-              />
+              {title}
               {Banner.highlight && (
                 <Typography
                   variant="h2"

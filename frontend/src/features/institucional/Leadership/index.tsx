@@ -41,7 +41,7 @@ export default function Leadership({ listLiderancas, sectionInfo }: { listLidera
 
   return (
     <>
-      <Box display="flex" flexDirection="column" gap="16px" id="leadership">
+      <Box display="flex" flexDirection="column" gap="16px" id="liderancas">
         <AnimationSplitText direction='down' threshold={0.6}>
           <Typography variant="h3" color="primary" width="100%">
             {sectionInfo?.titulo ?? "Lideranças"}

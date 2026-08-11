@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title description">
+  <title id="title">Imagem indisponível</title>
+  <desc id="description">Espaço reservado para uma imagem ainda não cadastrada.</desc>
+  <rect width="1200" height="675" fill="#e8ece9"/>
+  <path d="M0 540 280 300l190 170 155-145 335 310H0Z" fill="#b9c8be"/>
+  <circle cx="900" cy="190" r="72" fill="#f3b34c"/>
+  <text x="600" y="610" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" fill="#315b46">Imagem indisponível</text>
+</svg>

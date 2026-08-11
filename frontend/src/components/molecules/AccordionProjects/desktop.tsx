@@ -171,7 +171,7 @@ export default function AccordionProjectsDesktop({
           width: '50%',
           borderRadius: '32px',
           backgroundColor: background.default,
-          backgroundImage: `url("${resolveMediaUrl(expandedAccordion?.url_image_capa) ?? 'https://support.heberjahiz.com/hc/article_attachments/21013076295570'}")`,
+          backgroundImage: `url("${resolveMediaUrl(expandedAccordion?.url_image_capa) ?? '/media-placeholder.svg'}")`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',

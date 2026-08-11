@@ -5,7 +5,7 @@ import AnimationSplitText from '@/components/animations/splitText'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import React from 'react'
-import { resolveMediaUrl } from '@/lib/media'
+import { resolveMediaUrlOrFallback } from '@/lib/media'
 import { useTheme } from '@mui/material'
 import { useConteudoSecaoQuery } from '@/clients/api/conteudo-secao'
 
@@ -63,7 +63,7 @@ export default function Doacoes() {
                 width={96}
                 height={96}
                 sx={{
-                  backgroundImage: `url("${resolveMediaUrl(item?.url_imagem)}")`,
+                  backgroundImage: `url("${resolveMediaUrlOrFallback(item?.url_imagem)}")`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat'

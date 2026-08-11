@@ -6,7 +6,7 @@ import Box from '@mui/material/Box'
 import { useProgramaQuery } from '@/clients/api/programas'
 import LatestNews from '@/components/molecules/LastestNews'
 import Transparency from '@/features/institucional/Transparency'
-import { resolveMediaUrl } from '@/lib/media'
+import { resolveMediaUrl, resolveMediaUrlOrFallback } from '@/lib/media'
 import Typography from '@mui/material/Typography'
 import { useTransparenciaAreaQuery } from '@/clients/api/transparencia'
 import { useNoticiasAreaQuery } from '@/clients/api/noticias'
@@ -15,6 +15,7 @@ import VectorRoundedLines from '@/components/atoms/VectorRoundedLines'
 import SanitizedHtmlBox from '@/utils/stripHtmlTags'
 import { useConteudoSecaoQuery } from '@/clients/api/conteudo-secao'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
+import { useEffect } from 'react'
 
 export default function ProgramaUniquePage() {
   const { id } = useParams()
@@ -24,6 +25,10 @@ export default function ProgramaUniquePage() {
   const { data: listNoticias } = useNoticiasAreaQuery({ area_id: idsArea })
   const listImagePrograms = data?.imagens
   const { data: transparencySectionInfo } = useConteudoSecaoQuery("transparencia")
+
+  useEffect(() => {
+    if (data?.titulo) document.title = `${data.titulo} | CDC`
+  }, [data?.titulo])
 
   const Banner = {
     id: 1,
@@ -61,7 +66,7 @@ export default function ProgramaUniquePage() {
                 borderRadius="32px"
                 sx={{
                   bgcolor: 'gray',
-                  backgroundImage: `url("${resolveMediaUrl(listImagePrograms?.[0]?.url_imagem)}")`,
+                  backgroundImage: `url("${resolveMediaUrlOrFallback(listImagePrograms?.[0]?.url_imagem)}")`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',
@@ -85,7 +90,7 @@ export default function ProgramaUniquePage() {
                   justifyContent="flex-end"
                   borderRadius="32px"
                   sx={{
-                    backgroundImage: `url("${resolveMediaUrl(image.url_imagem)}")`,
+                    backgroundImage: `url("${resolveMediaUrlOrFallback(image.url_imagem)}")`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',

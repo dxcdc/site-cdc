@@ -7,6 +7,7 @@ import ListCards from '@/components/molecules/ListCards'
 import { useScrollToTop } from '@/hooks/useScroll'
 import { INoticias, useNoticiasListQuery } from '@/clients/api/noticias'
 import ZoomOutOnView from '@/components/animations/zoomOutOnView'
+import Pagination from '@mui/material/Pagination'
 
 export default function Noticias() {
   useScrollToTop()
@@ -15,6 +16,8 @@ export default function Noticias() {
   const { data } = useNoticiasListQuery()
   const [listNoticias, setListNoticias] = useState<INoticias[]>([])
   const [areasFiltro, setAreasFiltro] = useState<{ id: number, nome: string }[]>([])
+  const [page, setPage] = useState(1)
+  const pageSize = 12
 
   const onSearch = () => {
     if (fieldSearch !== "") {
@@ -39,6 +42,10 @@ export default function Noticias() {
       setListNoticias(data.data)
     }
   }, [areaSelect, data])
+
+  useEffect(() => {
+    setPage(1)
+  }, [areaSelect, fieldSearch])
 
   useEffect(() => {
     if (data) {
@@ -73,7 +80,24 @@ export default function Noticias() {
           />
         </Box>
       </ZoomOutOnView>
-      <ListCards page="/noticias" list={listNoticias} />
+      <ListCards
+        page="/noticias"
+        list={listNoticias.slice((page - 1) * pageSize, page * pageSize)}
+      />
+      {listNoticias.length > pageSize && (
+        <Box display="flex" justifyContent="center" pt="24px">
+          <Pagination
+            count={Math.ceil(listNoticias.length / pageSize)}
+            page={page}
+            onChange={(_, nextPage) => {
+              setPage(nextPage)
+              window.scrollTo({ top: 0, behavior: 'smooth' })
+            }}
+            color="primary"
+            aria-label="Paginação de notícias"
+          />
+        </Box>
+      )}
     </Box>
   )
 }

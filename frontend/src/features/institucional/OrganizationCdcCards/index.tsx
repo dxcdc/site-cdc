@@ -77,7 +77,7 @@ export default function OrganizationCdcCards({ listCards, sectionInfo }: { listC
             color="primary"
             textAlign="center"
             width="100%"
-            id='organizationCdc'
+            id='organizacao'
             fontSize={{ xs: '35px', md: '1.94rem' }}
           >
             {sectionInfo?.titulo}

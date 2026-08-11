@@ -8,7 +8,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ButtonAction from '../ButtonAction'
 import CircleIcon from '@mui/icons-material/Circle'
 import { useRouter } from 'next/navigation'
-import { resolveMediaUrl } from '@/lib/media'
+import { resolveMediaUrlOrFallback } from '@/lib/media'
 import { INoticiasResponse } from '@/clients/api/noticias'
 import AnimationSplitText from '@/components/animations/splitText'
 
@@ -44,7 +44,7 @@ export default function Banner({ data }: { data?: INoticiasResponse }) {
       link: `noticias/${sliceNoticias?.[2].id}`,
       highlight: ""
     },
-  ]
+  ].filter((banner) => banner.id && banner.title)
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
@@ -91,15 +91,15 @@ export default function Banner({ data }: { data?: INoticiasResponse }) {
           transform: `translateX(-${currentIndex * 100}vw)`,
         }}
       >
-        {BannerOption?.map((banner) => (
+        {BannerOption?.map((banner, index) => (
           <Box
             key={banner.id}
             width="100vw"
             height="100%"
             sx={{
               backgroundImage: `
-                linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-                url("${resolveMediaUrl(banner?.image)}")
+                linear-gradient(rgba(0, 0, 0, 0.68), rgba(0, 0, 0, 0.58)),
+                url("${resolveMediaUrlOrFallback(banner?.image)}")
               `,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
@@ -131,17 +131,18 @@ export default function Banner({ data }: { data?: INoticiasResponse }) {
               display="flex"
               flexDirection="column"
               gap="24px"
-              pl={{ xs: '16px', sm: '50px' }}
+              px={{ xs: '24px', sm: '50px' }}
               mb="80px"
               alignItems="flex-start"
               width="100%"
             >
               <AnimationSplitText initialFontWeight={700} delay={0} threshold={0}>
                 <Typography
+                  component={index === currentIndex ? 'h1' : 'h2'}
                   maxWidth="790px"
                   lineHeight="120%"
-                  fontSize={{ xs: "40px", lg: "48px" }}
-                  color={'primary.light'}
+                  fontSize={{ xs: '30px', sm: '40px', lg: '48px' }}
+                  color="#fff"
                 >
                   {banner?.title}
                 </Typography>

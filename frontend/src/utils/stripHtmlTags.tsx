@@ -73,6 +73,15 @@ const SanitizedHtmlBox: FC<Props> = ({
     const parser = new DOMParser()
     const doc = parser.parseFromString(sanitized, 'text/html')
 
+    if (indicadores) {
+      doc.querySelectorAll('h1').forEach((heading) => {
+        const replacement = doc.createElement('h2')
+        Array.from(heading.attributes).forEach(({ name, value }) => replacement.setAttribute(name, value))
+        replacement.innerHTML = heading.innerHTML
+        heading.replaceWith(replacement)
+      })
+    }
+
     const normalizeFontWeight = (value: number): number => {
       if (value < 500) return 400
       if (value < 650) return 600
