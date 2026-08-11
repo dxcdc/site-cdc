@@ -14,9 +14,9 @@ graph TD
     Admin([Equipe CDC / Admins]) -->|OAuth 2.0 / AdminJS| Nginx
     
     subgraph "Ambiente Dockerizado (Hostinger VPS / Local)"
-        Nginx -->|frontend.cdc.org| FEContainer[Frontend: Next.js 14]
-        Nginx -->|api.cdc.org| BEContainer[Backend: Express REST API]
-        Nginx -->|admin.cdc.org| AdminContainer[Painel Admin: AdminJS 7]
+        Nginx -->|/| FEContainer[Frontend: Next.js 14]
+        Nginx -->|/api e /uploads| BEContainer[Backend: Express REST API]
+        Nginx -->|/admin| AdminContainer[Painel Admin: AdminJS 7]
         
         BEContainer -->|Rede Interna Docker| DBContainer[(PostgreSQL 16)]
         AdminContainer -->|Rede Interna Docker| DBContainer
@@ -88,7 +88,7 @@ site-cdc/
 
 1. **Clonar o Repositório**:
    ```bash
-   git clone git@github.com:cdc-org-2025/site-cdc.git
+   git clone git@github.com:dxcdc/site-cdc.git
    cd site-cdc
    ```
 
@@ -105,9 +105,15 @@ site-cdc/
 
 4. **Acessar as Aplicações**:
    - 🌐 **Frontend (Next.js)**: `http://localhost:3000`
-   - ⚙️ **Backend API (Express)**: `http://localhost:5000`
+   - ⚙️ **Backend API (Express)**: `http://localhost:5001`
    - 🔐 **Painel Administrativo (AdminJS)**: `http://localhost:3001`
    - 🗄️ **Banco de Dados (PostgreSQL)**: `localhost:5432`
+
+   O endpoint de saúde da API está disponível em `http://localhost:5001/api/health`.
+
+> Em produção, mantenha `BIND_ADDRESS=127.0.0.1` e publique os serviços somente
+> por meio do proxy Nginx. Configure senhas fortes para banco, painel e cookies;
+> o projeto não possui credenciais padrão de produção.
 
 ---
 
@@ -115,8 +121,8 @@ site-cdc/
 
 Para detalhes aprofundados sobre a governança e o plano técnico, consulte os documentos na pasta `docs/`:
 
-- [Diretrizes de Documentação & Governança](file:///c:/Códigos/site-cdc/docs/diretrizes_documentacao.md) — Normas de escrita, regras de segurança, alias Git Graph e Registro de Decisões de Arquitetura (ADR).
-- [Inquérito de Viabilidade & Plano de Migração GCP ➔ Hostinger](file:///c:/Códigos/site-cdc/docs/inquerito_migracao_gcp_hostinger.md) — Diagnóstico dos serviços GCP atuais (Cloud Run, Cloud SQL, GCS) e roteiro de migração em 6 etapas para a Hostinger VPS.
+- [Diretrizes de Documentação & Governança](docs/diretrizes_documentacao.md) — Normas de escrita, regras de segurança, alias Git Graph e Registro de Decisões de Arquitetura (ADR).
+- [Inquérito de Viabilidade & Plano de Migração GCP ➔ Hostinger](docs/inquerito_migracao_gcp_hostinger.md) — Diagnóstico dos serviços GCP atuais (Cloud Run, Cloud SQL, GCS) e roteiro de migração em 6 etapas para a Hostinger VPS.
 
 ---
 

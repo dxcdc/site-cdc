@@ -21,6 +21,10 @@ async function downloadFile(relativeUrl) {
   const targetPath = path.join(UPLOADS_DIR, relativeUrl);
   const targetDir = path.dirname(targetPath);
 
+  if (fs.existsSync(targetPath)) {
+    return true;
+  }
+
   if (!fs.existsSync(targetDir)) {
     fs.mkdirSync(targetDir, { recursive: true });
   }
@@ -50,9 +54,15 @@ async function main() {
     { table: 'capa', column: 'url_img' },
     { table: 'noticias', column: 'imagem_capa' },
     { table: 'parceiro', column: 'url_imagem' },
+    { table: 'programas', column: 'url_image_capa' },
     { table: 'programa_imagens', column: 'url_imagem' },
     { table: 'linha_do_tempo_imagens', column: 'url_imagem' },
-    { table: 'organizacao_imagens', column: 'imagem_url' }
+    { table: 'organizacao_imagens', column: 'imagem_url' },
+    { table: 'transparencia', column: 'url_imagem' },
+    { table: 'lideranca', column: 'url_imagem' },
+    { table: 'publicacao', column: 'url_imagem' },
+    { table: 'publicacao_imagens', column: 'url_imagem' },
+    { table: 'dados_bancarios', column: 'url_imagem' }
   ];
 
   let successCount = 0;

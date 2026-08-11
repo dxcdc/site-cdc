@@ -24,7 +24,10 @@ chmod -R 777 uploads
 
 # 4. Reconstrução e inicialização dos contêineres Docker
 echo "🐳 Reconstruindo contêineres Docker em segundo plano..."
-docker compose up -d --build
+docker compose build
+docker compose up -d postgres
+docker compose run --rm backend npm run migrate
+docker compose up -d
 
 # 5. Status dos contêineres
 echo "--------------------------------------------------------"

@@ -32,6 +32,12 @@ logs/
 # Docker Volumes Locais
 uploads/
 postgres_data/
+backups/
+
+# Artefatos Gerados por Auditorias e Testes
+checklist_*.pdf
+test.html
+test.pdf
 
 # Sistema Operacional
 .DS_Store

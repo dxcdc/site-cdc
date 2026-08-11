@@ -21,9 +21,11 @@ jobs:
           key: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
           port: ${{ secrets.HOSTINGER_SSH_PORT || 22 }}
           script: |
-            cd /opt/site-cdc || git clone git@github.com:cdc-org-2025/site-cdc.git /opt/site-cdc
-            cd /opt/site-cdc
-            git pull origin main
-            docker compose down
-            docker compose up -d --build
-            docker system prune -f
+            cd /var/www/site-cdc || git clone git@github.com:dxcdc/site-cdc.git /var/www/site-cdc
+            cd /var/www/site-cdc
+            git pull --ff-only origin main
+            docker compose build
+            docker compose up -d postgres
+            docker compose run --rm backend npm run migrate
+            docker compose up -d
+            docker compose ps
