@@ -1,4 +1,3 @@
-
 import { DataTypes, Model } from "sequelize";
 
 class Contato extends Model {
@@ -10,6 +9,8 @@ class Contato extends Model {
       mensagem: DataTypes.TEXT,
       resposta: DataTypes.BOOLEAN,
       data_envio: DataTypes.DATE,
+      created_at: DataTypes.DATE,
+      updated_at: DataTypes.DATE,
     }, {
       sequelize,
       tableName: "contato",

@@ -10,13 +10,17 @@ class ContatoFormController {
         return res.status(400).json({ error: 'Preencha os campos obrigatórios (nome, e-mail e mensagem).' });
       }
 
+      const now = new Date();
+
       // 1. Salvar no banco de dados na tabela "contato" para garantir recebimento
       await db.Contato.create({
         nome,
         email,
         razao_contato: motivo || 'Contato pelo site',
         mensagem,
-        data_envio: new Date(),
+        data_envio: now,
+        created_at: now,
+        updated_at: now,
       });
 
       // 2. Tentar enviar e-mail via SMTP se credenciais estiverem configuradas
