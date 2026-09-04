@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography'
 import { useTheme } from '@mui/material'
 import { resolveMediaUrlOrFallback } from '@/lib/media'
 
-import { sanitizeHtml } from '@/utils/stripHtmlTags'
+import DOMPurify from 'isomorphic-dompurify'
 
 export interface IBannerUnique {
   Banner: TypeBannerUnique
@@ -84,7 +84,7 @@ export default function BannerUnique({ Banner }: IBannerUnique) {
                     fontWeight: 700,
                   },
                 }}
-                dangerouslySetInnerHTML={{ __html: sanitizeHtml(rawTitle) }}
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(rawTitle, { ADD_ATTR: ['style'] }) }}
               />
             ) : (
               <Typography
