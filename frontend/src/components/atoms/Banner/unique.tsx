@@ -94,6 +94,7 @@ export default function BannerUnique({ Banner }: IBannerUnique) {
                 variant="h2"
                 sx={{
                   fontSize: {
+                    xs: '1.8rem',
                     sm: '2.67rem',
                   },
                 }}
@@ -105,13 +106,15 @@ export default function BannerUnique({ Banner }: IBannerUnique) {
                     variant="h2"
                     color="secondary.light"
                     sx={{
+                      display: 'block',
+                      mt: '4px',
                       fontSize: {
+                        xs: '1.8rem',
                         sm: '2.67rem',
                       },
                     }}
                     component="span"
                   >
-                    {' '}
                     {Banner.highlight}
                   </Typography>
                 )}
