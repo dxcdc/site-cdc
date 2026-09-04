@@ -284,21 +284,6 @@ function CardTagDesc({
         >
           {info?.titulo ?? "Título não informado"}
         </Typography>
-        {(info?.autor || info?.data_publicacao || info?.tempo_leitura) && (
-          <Box display="flex" gap="8px" flexWrap="wrap" mt="6px">
-            {info?.autor && (
-              <Typography variant="caption" color="text.secondary">Por {info.autor}</Typography>
-            )}
-            {info?.data_publicacao && (
-              <Typography variant="caption" color="text.secondary">
-                {new Intl.DateTimeFormat('pt-BR').format(new Date(info.data_publicacao))}
-              </Typography>
-            )}
-            {info?.tempo_leitura && (
-              <Typography variant="caption" color="text.secondary">{info.tempo_leitura} min de leitura</Typography>
-            )}
-          </Box>
-        )}
       </Box>
     </Box>
   )
