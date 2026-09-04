@@ -5,6 +5,8 @@ import Typography from '@mui/material/Typography'
 import { useTheme } from '@mui/material'
 import { resolveMediaUrlOrFallback } from '@/lib/media'
 
+import { sanitizeHtml } from '@/utils/stripHtmlTags'
+
 export interface IBannerUnique {
   Banner: TypeBannerUnique
 }
@@ -20,9 +22,9 @@ export default function BannerUnique({ Banner }: IBannerUnique) {
   const {
     palette: { background },
   } = useTheme()
-  const title = Banner?.title
-    ? new DOMParser().parseFromString(Banner.title, 'text/html').body.textContent?.trim()
-    : ''
+
+  const rawTitle = Banner?.title || ''
+  const hasHtml = /<[a-z][\s\S]*>/i.test(rawTitle)
 
   return (
     <Box
@@ -65,35 +67,56 @@ export default function BannerUnique({ Banner }: IBannerUnique) {
             alignItems="flex-start"
             width="100%"
           >
-            <Typography
-              component="h1"
-              maxWidth="790px"
-              lineHeight="120%"
-              variant="h2"
-              sx={{
-                fontSize: {
-                  sm: '2.67rem',
-                },
-              }}
-              color={'primary.light'}
-            >
-              {title}
-              {Banner.highlight && (
-                <Typography
-                  variant="h2"
-                  color="secondary.light"
-                  sx={{
-                    fontSize: {
-                      sm: '2.67rem',
-                    },
-                  }}
-                  component="span"
-                >
-                  {' '}
-                  {Banner.highlight}
-                </Typography>
-              )}
-            </Typography>
+            {hasHtml ? (
+              <Box
+                maxWidth="790px"
+                sx={{
+                  color: 'primary.light',
+                  '& h1': {
+                    fontSize: { xs: '1.8rem', sm: '2.67rem' },
+                    lineHeight: '120%',
+                    fontWeight: 700,
+                    margin: 0,
+                  },
+                  '& span': {
+                    fontSize: { xs: '1.8rem', sm: '2.67rem' },
+                    lineHeight: '120%',
+                    fontWeight: 700,
+                  },
+                }}
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(rawTitle) }}
+              />
+            ) : (
+              <Typography
+                component="h1"
+                maxWidth="790px"
+                lineHeight="120%"
+                variant="h2"
+                sx={{
+                  fontSize: {
+                    sm: '2.67rem',
+                  },
+                }}
+                color={'primary.light'}
+              >
+                {rawTitle}
+                {Banner.highlight && (
+                  <Typography
+                    variant="h2"
+                    color="secondary.light"
+                    sx={{
+                      fontSize: {
+                        sm: '2.67rem',
+                      },
+                    }}
+                    component="span"
+                  >
+                    {' '}
+                    {Banner.highlight}
+                  </Typography>
+                )}
+              </Typography>
+            )}
           </Box>
         </Box>
       </Box>
